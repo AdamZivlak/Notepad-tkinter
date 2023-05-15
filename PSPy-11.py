@@ -43,9 +43,13 @@ def save_file():
         file.close()
         root.title(f"{os.path.basename(file)} - Notepad")
 
-def always_on_top():
-    root.lift()
-    root.wm_attributes("-topmost", True)
+def toggle_always_on_top():
+    global always_on_top
+    if always_on_top.get() == 0:
+        root.attributes('-topmost', False)
+    else:
+        root.attributes('-topmost', True)
+    root.focus_set()
 
 def exit_application():
     root.destroy()
@@ -154,11 +158,11 @@ menu_bar.add_cascade(label="Help", menu=help_menu)
 root.config(menu=menu_bar)
 
 # Adding the View Menu and its components
-view_menu = Menu(menu_bar, tearoff=False, activebackground='DodgerBlue')
+always_on_top = IntVar()
+always_on_top_menu = Menu(menu_bar, tearoff=False, activebackground='DodgerBlue')
+always_on_top_menu.add_checkbutton(label="Always On Top", variable=always_on_top, command=toggle_always_on_top)
 
-menu_bar.add_cascade(label="View", menu=view_menu)
-
-view_menu.add_command(label='Always on top', command=always_on_top)
+menu_bar.add_cascade(label="View", menu=always_on_top_menu)
 
 
 # Adding a label to the bottom that counts the number of characters in the text
