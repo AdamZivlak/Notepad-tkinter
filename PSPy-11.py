@@ -21,8 +21,8 @@ def open_file():
 
 
 def open_new_file():
-    root.title("Untitled - Notepad")
     text_area.delete(1.0, END)
+    root.title("New File - Notepad")
 
 
 def save_file():
@@ -65,6 +65,14 @@ def cut_text():
 
 def paste_text():
     text_area.event_generate("<<Paste>>")
+
+
+def undo_text():
+    text_area.event_generate("<<Undo>>")
+
+
+def redo_text():
+    text_area.event_generate("<<Redo>>")
 
 
 def select_all():
@@ -138,6 +146,8 @@ menu_bar.add_cascade(label="File", menu=file_menu)
 # Adding the Edit Menu and its components
 edit_menu = Menu(menu_bar, tearoff=False, activebackground='DodgerBlue')
 
+edit_menu.add_command(label='Undo', command=undo_text)
+edit_menu.add_command(label='Redo', command=redo_text)
 edit_menu.add_command(label='Copy', command=copy_text)
 edit_menu.add_command(label='Cut', command=cut_text)
 edit_menu.add_command(label='Paste', command=paste_text)
