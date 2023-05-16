@@ -8,7 +8,7 @@ import os
 # Creating all the functions of all the buttons in the NotePad
 def open_file():
     global file
-    file = fd.askopenfilename(defaultextension='.txt', filetypes=[('All Files', '*.*'), ("Text File", "*.txt*")])
+    file = fd.askopenfilename(defaultextension='.txt', filetypes=[('All Files', '*.*'), ("Text File", "*.txt*"), ("Python File", "*.py")])
 
     if file != '':
         root.title(f"{os.path.basename(file)}")
@@ -20,29 +20,20 @@ def open_file():
         file = None
 
 
-def open_new_file():
+def new_file():
     text_area.delete(1.0, END)
     root.title("New File - Notepad")
 
 
-def save_file():
+def save_as_file():
     global file
-    if file == '':
-        file = None
-    else:
-        file = open(file, "w")
+    file = fd.asksaveasfilename(initialfile='Untitled.txt', defaultextension='.txt', filetypes=[("Text File", "*.txt*"), ("Word Document", '*,docx*'), ("PDF", "*.pdf*")])
+    if file:
+        file = open(file,'w')
         file.write(text_area.get(1.0, END))
         file.close()
 
-    if file is None:
-        file = fd.asksaveasfilename(initialfile='Untitled.txt', defaultextension='.txt',
-                                    filetypes=[("Text File", "*.txt*"), ("Word Document", '*,docx*'), ("PDF", "*.pdf*")])
-    else:
-        file = open(file, "w")
-        file.write(text_area.get(1.0, END))
-        file.close()
-        root.title(f"{os.path.basename(file)} - Notepad")
-
+        
 def toggle_always_on_top():
     global always_on_top
     if always_on_top.get() == 0:
@@ -117,7 +108,7 @@ def set_text_color():
 # Initializing the window
 root = Tk()
 root.title("Untitled - Notepad")
-root.geometry('800x500')
+root.geometry('1000x600')
 root.resizable(0, 0)
 
 root.columnconfigure(0, weight=1)
@@ -131,7 +122,7 @@ file = ''
 menu_bar = Menu(root)
 root.config(menu=menu_bar)
 
-text_area = Text(root, font=("Monospace", 12))
+text_area = Text(root, width=97, height=25 ,font=("Monospace", 12))
 text_area.grid(sticky=NSEW)
 
 scroller = Scrollbar(text_area, orient=VERTICAL)
@@ -143,9 +134,9 @@ text_area.config(yscrollcommand=scroller.set)
 # Adding the File Menu and its components
 file_menu = Menu(menu_bar, tearoff=False, activebackground='DodgerBlue')
 
-file_menu.add_command(label="New", command=open_new_file)
+file_menu.add_command(label="New", command=new_file)
 file_menu.add_command(label="Open File", command=open_file)
-file_menu.add_command(label="Save As", command=save_file)
+file_menu.add_command(label="Save As", command=save_as_file)
 file_menu.add_separator()
 file_menu.add_command(label="Close File", command=exit_application)
 
