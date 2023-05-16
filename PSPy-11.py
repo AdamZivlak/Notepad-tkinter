@@ -7,17 +7,16 @@ import os
 
 # Creating all the functions of all the buttons in the NotePad
 def open_file():
-    global file
     file = fd.askopenfilename(defaultextension='.txt', filetypes=[('All Files', '*.*'), ("Text File", "*.txt*"), ("Python File", "*.py")])
 
-    if file != '':
-        root.title(f"{os.path.basename(file)}")
-        text_area.delete(1.0, END)
-        with open(file, "r") as file_:
-            text_area.insert(1.0, file_.read())
-            file_.close()
-    else:
-        file = None
+    if file:
+        global current_file
+        current_file = file
+
+    text_area.delete(1.0, END)
+    with open(file, "r") as file_:
+        text_area.insert(1.0, file_.read())
+        file_.close()
 
 
 def new_file():
@@ -25,13 +24,24 @@ def new_file():
     root.title("New File - Notepad")
 
 
+def save_file():
+    global current_file
+    if current_file:
+        with open(current_file, 'w') as file:
+            file.write(text_area.get(1.0, END))
+            file.close()
+    else:
+        save_as_file()
+
+
 def save_as_file():
-    global file
+    global current_file
     file = fd.asksaveasfilename(initialfile='Untitled.txt', defaultextension='.txt', filetypes=[("Text File", "*.txt*"), ("Word Document", '*,docx*'), ("PDF", "*.pdf*")])
     if file:
-        file = open(file,'w')
-        file.write(text_area.get(1.0, END))
-        file.close()
+        with open(file, 'w') as file_:
+            file_.write(text_area.get(1.0, END))
+            file_.close()
+        current_file = file
 
         
 def toggle_always_on_top():
@@ -117,6 +127,8 @@ root.rowconfigure(0, weight=1)
 icon = ImageTk.PhotoImage(Image.open('Notepad.png'))
 root.iconphoto(False, icon)
 file = ''
+# global variabel för att hålla reda på den aktuella filen som är öppen
+current_file = ''
 
 # Setting the basic components of the window
 menu_bar = Menu(root)
@@ -136,6 +148,7 @@ file_menu = Menu(menu_bar, tearoff=False, activebackground='DodgerBlue')
 
 file_menu.add_command(label="New", command=new_file)
 file_menu.add_command(label="Open File", command=open_file)
+file_menu.add_command(label="Save", command=save_file)
 file_menu.add_command(label="Save As", command=save_as_file)
 file_menu.add_separator()
 file_menu.add_command(label="Close File", command=exit_application)
