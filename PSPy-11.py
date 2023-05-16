@@ -69,20 +69,20 @@ def paste_text():
     text_area.event_generate("<<Paste>>")
 
 
-def undo_text():
-    text_area.event_generate("<<Undo>>")
-
-
-def redo_text():
-    text_area.event_generate("<<Redo>>")
-
-
 def select_all():
     text_area.event_generate("<<Control-Keypress-A>>")
 
 
 def delete_last_char():
     text_area.event_generate("<<KP_Delete>>")
+
+
+def undo_text():
+    text_area.edit_undo()
+
+
+def redo_text():
+    text_area.edit_redo()
 
 
 def about_notepad():
@@ -137,7 +137,7 @@ current_file = ''
 menu_bar = Menu(root)
 root.config(menu=menu_bar)
 
-text_area = Text(root, width=97, height=25 ,font=("Monospace", 12))
+text_area = Text(root, width=97, height=25 ,font=("Monospace", 12), undo=True)
 text_area.grid(sticky=NSEW)
 
 scroller = Scrollbar(text_area, orient=VERTICAL)
@@ -161,8 +161,8 @@ menu_bar.add_cascade(label="File", menu=file_menu)
 # Adding the Edit Menu and its components
 edit_menu = Menu(menu_bar, tearoff=False, activebackground='DodgerBlue')
 
-edit_menu.add_command(label='Undo', command=undo_text)
-edit_menu.add_command(label='Redo', command=redo_text)
+edit_menu.add_command(label='Undo   '+'            Crtl+Z', command=undo_text)
+edit_menu.add_command(label='Redo   '+'             Crtl+Y', command=redo_text)
 edit_menu.add_command(label='Copy', command=copy_text)
 edit_menu.add_command(label='Cut', command=cut_text)
 edit_menu.add_command(label='Paste', command=paste_text)
