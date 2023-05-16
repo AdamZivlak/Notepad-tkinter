@@ -106,6 +106,14 @@ Under the Edit Menu:
     mb.showinfo(title="All commands", message=commands, width=60, height=40)
 
 
+def set_background_color():
+    text_area.event_generate()
+
+
+def set_text_color():
+    text_area.event_generate()
+
+
 # Initializing the window
 root = Tk()
 root.title("Untitled - Notepad")
@@ -156,6 +164,15 @@ edit_menu.add_command(label='Select All', command=select_all)
 edit_menu.add_command(label='Delete', command=delete_last_char)
 
 menu_bar.add_cascade(label="Edit", menu=edit_menu)
+
+# Adding the Setting Menu and its components
+setting_menu = Menu(menu_bar, tearoff=False, activebackground='DodgerBlue')
+
+setting_menu.add_command(label="Background color", command=set_background_color)
+setting_menu.add_command(label="Text color", command=set_text_color)
+
+
+menu_bar.add_cascade(label="Settings", menu=setting_menu)
 
 # Adding the Help Menu and its components
 help_menu = Menu(menu_bar, tearoff=False, activebackground='DodgerBlue')
