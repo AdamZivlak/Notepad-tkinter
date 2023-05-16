@@ -1,6 +1,7 @@
 from tkinter import *
 import tkinter.filedialog as fd
 import tkinter.messagebox as mb
+import tkinter.colorchooser as cc
 
 from PIL import Image, ImageTk
 import os
@@ -108,11 +109,13 @@ Under the Edit Menu:
 
 
 def set_background_color():
-    text_area.event_generate()
+    color = cc.askcolor(title="Choose Background Color")[1]
+    text_area.config(bg=color)
 
 
 def set_text_color():
-    text_area.event_generate()
+    color = cc.askcolor(title="Choose Text Color")[1]
+    text_area.config(fg=color)
 
 
 # Initializing the window
