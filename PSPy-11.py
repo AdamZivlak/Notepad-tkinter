@@ -122,7 +122,7 @@ def set_text_color():
 root = Tk()
 root.title("Untitled - Notepad")
 root.geometry('1000x600')
-root.resizable(0, 0)
+root.resizable(1, 1)
 
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
