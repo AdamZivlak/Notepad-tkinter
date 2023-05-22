@@ -163,6 +163,7 @@ separator.grid(row=0, column=1, sticky='ns')
 
 text_area = Text(root, width=97, height=25 ,font=("Monospace", 12), undo=True)
 text_area.grid(row=0, column=2, sticky=NSEW)
+line_numbers.config(font=text_area['font'])
 
 scroller = Scrollbar(text_area, orient=VERTICAL)
 scroller.pack(side=RIGHT, fill=Y)
