@@ -2,6 +2,8 @@ from tkinter import *
 import tkinter.filedialog as fd
 import tkinter.messagebox as mb
 import tkinter.colorchooser as cc
+from tkinter import ttk
+
 
 from PIL import Image, ImageTk
 import os
@@ -118,13 +120,29 @@ def set_text_color():
     text_area.config(fg=color)
 
 
+def update_line_numbers(event=None):
+    # Rensa befintliga radnummer
+    line_numbers.delete('1.0', 'end')
+
+    # Hämta antalet rader i textområdet
+    total_lines = str(text_area.get('1.0', 'end')).count('\n')
+
+    # Lägg till radnummer för varje rad
+    for line in range(1, total_lines + 1):
+        line_numbers.insert('end', str(line) + '\n')
+
+# Händelsekoppling för att uppdatera radnumren när du börjar skriva
+def on_text_change(event=None):
+    update_line_numbers()
+
+
 # Initializing the window
 root = Tk()
 root.title("Untitled - Notepad")
 root.geometry('1000x600')
 root.resizable(1, 1)
 
-root.columnconfigure(0, weight=1)
+root.columnconfigure(2, weight=1)
 root.rowconfigure(0, weight=1)
 
 icon = ImageTk.PhotoImage(Image.open('Notepad.png'))
@@ -137,14 +155,22 @@ current_file = ''
 menu_bar = Menu(root)
 root.config(menu=menu_bar)
 
+line_numbers = Text(root, width=4, height=25, bg='#f0f0f0', relief='flat')
+line_numbers.grid(row=0, column=0, sticky='ns')
+
+separator = ttk.Separator(root, orient='vertical')
+separator.grid(row=0, column=1, sticky='ns')
+
 text_area = Text(root, width=97, height=25 ,font=("Monospace", 12), undo=True)
-text_area.grid(sticky=NSEW)
+text_area.grid(row=0, column=2, sticky=NSEW)
 
 scroller = Scrollbar(text_area, orient=VERTICAL)
 scroller.pack(side=RIGHT, fill=Y)
 
 scroller.config(command=text_area.yview)
 text_area.config(yscrollcommand=scroller.set)
+
+text_area.bind('<Key>', on_text_change)
 
 # Adding the File Menu and its components
 file_menu = Menu(menu_bar, tearoff=False, activebackground='DodgerBlue')
