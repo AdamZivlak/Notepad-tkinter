@@ -1,3 +1,3 @@
 # Notepad
 
-En notepad utvecklad i VS Code
+En notepad utvecklad i Python med hjälp av tkinter.
